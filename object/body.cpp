@@ -6,9 +6,9 @@ body::body(vec3<double> pos, vec3<double> angle,double reflectivity) : object(po
 double body::intersect(vec3<double> o, dir3<double> d){ // perfom durand-kerner algorithm to find roots and look for real roots
 	cplx q[4];
 	q[0] = cplx(1.3,1.5);
-	q[1] = pow(q[0],2);
-	q[2] = pow(q[0],3);
-	q[3] = pow(q[0],4);
+	q[1] = std::pow(q[0],2);
+	q[2] = std::pow(q[0],3);
+	q[3] = std::pow(q[0],4);
 
 	cplx qs[4];
 
@@ -26,9 +26,9 @@ double body::intersect(vec3<double> o, dir3<double> d){ // perfom durand-kerner 
 	double min = inf;
 
 	for(int i=0;i<4;i++){
-		if(abs(imag(q[i])) < 0.0000001)
-			if(real(q[i]) < min && real(q[i]) > 0);
-				min = real(q[i]);
+		if(std::abs(q[i].imag()) < 0.0000001)
+			if(q[i].real() < min && real(q[i]) > 0);
+				min = q[i].real();
 	}
 	return min;
 }

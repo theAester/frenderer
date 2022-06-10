@@ -12,16 +12,16 @@ void scene::render(uint32_t* screen_in){
 	dir3<double> cam_up = cam.up_dir();
 
 	dir3<double> khat = dir3<double>(
-			cam_proj.y - cam_up.z,
-			cam_proj.z - cam_up.x,
-			cam_proj.x - cam_up.y
+			cam_proj.y * cam_up.z - cam_proj.z * cam_up.y,
+			cam_proj.z * cam_up.x - cam_proj.x * cam_up.z,
+			cam_proj.x * cam_up.y - cam_proj.y * cam_up.x
 			);//cross product
 
 	double dist = cam.lense_dist;
 	double l = dist*tan(cam.fov*M_PI/360);
 	double ll = l / aspect_ratio;
 	
-	vec3<double> screen_corner = cam_up*ll - khat*l;
+	vec3<double> screen_corner = cam_up*ll - khat*l + cam_proj*dist;
 
 	double stepx = 2*l/resolution.x;
 	double stepy = 2*ll/resolution.y;
@@ -30,7 +30,7 @@ void scene::render(uint32_t* screen_in){
 
 	for (int i=0;i<resolution.x;i++){
 		for(int j=0;j<resolution.y;j++){
-			dir3<double> prdir ( screen_corner + khat*i*stepx - cam_up*j*stepy - cam.pos);
+			dir3<double> prdir ( screen_corner + khat*i*stepx - cam_up*j*stepy);
 			vec3<double> acq_color = raytrace_master(prdir);
 			acq_color = clip(acq_color);
 			*pp= 0xFF000000 | ((uint8_t) (acq_color.x*255))<<16 | ((uint8_t) (acq_color.y*255))<<8 | ((uint8_t) acq_color.z*255);

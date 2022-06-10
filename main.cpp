@@ -1,6 +1,4 @@
 #include <list>
-#include <iostream>
-#include <math.h>
 #include <complex>
 #include <SDL2/SDL.h>
 using namespace std;
@@ -13,7 +11,7 @@ using cplx = complex<double>;
 #include "scene/scene.h"
 
 #define XRES 30
-#define YRES 20
+#define YRES 16
 
 class sphere : public body{
 	public:

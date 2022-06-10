@@ -1,7 +1,7 @@
 #ifndef _FRENDERER_BODY_H_
 #define _FRENDERER_BODY_H_
 #include <limits>
-#include <math.h>
+#include <complex>
 #define inf numeric_limits<double>::max()
 class scene;
 class body : public object{
