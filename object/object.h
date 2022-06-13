@@ -6,5 +6,4 @@ class object{
 	object(vec3<double>);
 	object();
 };
-#include "object.cpp"
 #endif

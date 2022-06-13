@@ -1,6 +1,5 @@
 #ifndef _FRENDERER_SCENE_H_
 #define _FRENDERER_SCENE_H_
-#include <list>
 class scene{
 	struct res{
 		int x;
@@ -12,12 +11,10 @@ class scene{
 	vec3<double> raytrace_single(vec3<double>, dir3<double>, int);
 	scene(int, int, camera,vec3<double>);
 	res resolution;
-	void render(uint32_t*);
+	void render(void*, int,bool=false);
 	camera cam;
 	list<body*> bodies;
 	list<light*> lights;
 	vec3<double> ambient;
 };
-#include "../object/body.cpp"
-#include "scene.cpp"
 #endif

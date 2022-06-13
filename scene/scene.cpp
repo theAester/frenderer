@@ -1,3 +1,17 @@
+#include <complex>
+#include <cmath>
+#include <list>
+#include <limits>
+#define inf numeric_limits<double>::max()
+using namespace std;
+using cplx = complex<double>;
+#include "../common/comm.h"
+#include "../object/object.h"
+#include "../object/camera.h"
+#include "../object/body.h"
+#include "../object/light.h"
+#include "scene.h"
+
 scene::scene(int resolution_x, int resolution_y, camera cam, vec3<double> ambient){
 	resolution.x = resolution_x;
 	resolution.y = resolution_y;
@@ -5,7 +19,7 @@ scene::scene(int resolution_x, int resolution_y, camera cam, vec3<double> ambien
 	this->ambient = ambient;
 }
 
-void scene::render(uint32_t* screen_in){
+void scene::render(void* screen_in,int pitch, bool grey){
 	// calculate screen projection points
 	double aspect_ratio = ((double)resolution.x)/((double)resolution.y);
 	dir3<double> cam_proj = cam.proj_dir();
@@ -26,15 +40,20 @@ void scene::render(uint32_t* screen_in){
 	double stepx = 2*l/resolution.x;
 	double stepy = 2*ll/resolution.y;
 	
-	uint32_t* pp = screen_in;
+	uint32_t* pp;
+	unsigned char* kk;
 
-	for (int i=0;i<resolution.x;i++){
-		for(int j=0;j<resolution.y;j++){
+	for(int j=0;j<resolution.y;j++){
+		if(!grey) pp = (uint32_t*)((uint8_t*) screen_in + j*pitch);
+		else kk = (unsigned char*)screen_in + j*pitch;
+		for (int i=0;i<resolution.x;i++){
 			dir3<double> prdir ( screen_corner + khat*i*stepx - cam_up*j*stepy);
 			vec3<double> acq_color = raytrace_master(prdir);
 			acq_color = clip(acq_color);
-			*pp= 0xFF000000 | ((uint8_t) (acq_color.x*255))<<16 | ((uint8_t) (acq_color.y*255))<<8 | ((uint8_t) acq_color.z*255);
-			pp += sizeof(uint32_t);
+			if(!grey) *pp= 0xFF000000 | ((uint8_t) (acq_color.x*255))<<16 | ((uint8_t) (acq_color.y*255))<<8 | (uint8_t) (acq_color.z*255);
+			else *kk = (unsigned char) (acq_color.x*255);
+			if(!grey) {if(!(i==resolution.x-1 && j==resolution.y-1)) pp ++;}
+			else if(!(i==resolution.x-1 && j==resolution.y-1)) kk ++;
 		}
 	}
 	return;
@@ -61,14 +80,15 @@ vec3<double> scene::raytrace_single(vec3<double> pos, dir3<double> dir, int boun
 	double mindist = inf;
 	while(itt != itte){
 		double dist = (*itt)->intersect(pos,dir);
-		if(isfinite(dist))
+		if(dist != inf){ // collision detected
 			if(dist<mindist){
 				mindist = dist;
 				itts = itt;
 			}
+		}
 		itt ++;
 	}
-	if(!isfinite(mindist))
+	if(mindist == inf)
 		return vec3<double>(0,0,0); // into oblivion ...
 
 	return (*itts)->shader(this, mindist, dir, bounce + 1);
