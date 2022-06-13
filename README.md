@@ -80,22 +80,23 @@ main5.cpp: ball going through spinning donut.
 refer to example 2 and 5 for better understanding.
 
 # functionality
-the renderer uses raytracing to specify color of each pixel. it will try to NUMMERICALLY solve the collision function for each ray which is very time consuming.
-the durand-kerner algorithm has bee used for this purpose and this is why you have to specify a degree when initializing a body.
-the algorithm basically takes in the degree and through iteration finds exactly as many roots and then sparates the real ones and returns the minimum.
+the renderer uses raytracing to specify the color of each pixel. it will try to NUMERICALLY solve the collision equation for each ray which is very time consuming.
+the durand-kerner algorithm is used for this matter and this is why you have to specify a degree when initializing a body.
+the algorithm basically takes in the degree and through iteration finds exactly as many roots and then separates the real ones and returns the minimum.
 
-the algorithm also tries to calculate the normal function at each collision point numerically.
+the algorithm also tries to calculate the normal vector at each collision point numerically.
 
 since numeric calculations can be time consuming two actions are possible:
- 1. You can override the ```body::intersect``` function which basicall intersects a line with your shape. it returns inf if there is no collision.
-     so if your collision equation; f(x) = 0 is mathematically soluable, its best to override the intersect function to caculate the distance using a formula
-     you can also override the ```body::get_normal``` function to directlyly calculate the expression for grad(f)
+ 1. You can override the ```body::intersect``` function which basically intersects a line with your shape. it returns inf if there is no collision and the distance from the origin to the collision point if there is.
+     so if your collision equation, f(<b>r</b>) = 0, is mathematically soluable, its best to override the intersect function to calculate the distance using a formula
+     you can also override the ```body::get_normal``` function to directly calculate the expression for grad(f)
      
  2. you can enable the  <b>hitbox</b> feature for your classes by using the optional arguments in the body initializer<b>(see example 3)</b>.
     a hitbox is basically an ellisoid surrounding the shape but you have to specify the length of its radii so it encapsulated your entire shape.
     then the intersection function will use a formula to check for collisions with the hitbox before starting the numeric solver which can save a lot of computational power.
     
 # Notes:
-Code reviews and critisism is appreciated.
-The current release relies on cpu and main memory to do all the calculations and thus is a little slow. A greate TODO is to leave some of the calculations 
+Code reviews and critisism is appreciated. You can email through hiradcode@yahoo.com
+
+The current release relies on cpu and main memory to do all the calculations and hence is a little slow. A greate TODO is to leave some of the calculations 
 to the GPU which would be a huge speed up.
