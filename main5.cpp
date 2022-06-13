@@ -75,11 +75,9 @@ class donut : public body{
 	}
 };
 
-//char chars[] = {'$','@','B','%','8','&','W','M','#','*','o','a','h','k','b','d','p','q','w','m','Z','O','0','Q',
-//	'L','C','J','U','Y','X','z','c','v','u','n','x','r','j','f','t','/','\\','|','(',')','1','{','}','[',']','?','-','_','+','~',
-//	'<','>','i','!','l','I',';',':',',','"','^','`','\'','.',' '};
+char chars[] = {'$','@','B','&','%','W','#','k','d','q','m','O','0','L','l','i','/','\\','|','(',')','1','{','}','[',']','?','<','>',';',':','^','+','~','-','\'','`','.',' '};  // more detail less contrast
  
-char chars[] = {' ','.',':','-','=','+','*','#','%','@'};
+//char chars[] = {' ','.',':','-','=','+','*','#','%','@'}; // less detail more contrast
 
 int seg(unsigned int i){
 	const int len = 255;
@@ -122,7 +120,7 @@ int main(int argc, char* argv[]){
 		sc.render( (void*) screen_buff,pitch, true);
 		for(int i=0;i<YRES;i++){
 			for(int j=0;j<XRES;j++){
-				printf("%c ",chars[ seg( (unsigned int)screen_buff[i*XRES + j] + 2 ) ]);
+				printf("%c ",chars[ sizeof(chars)-1-seg( (unsigned int)screen_buff[i*XRES + j] + 2 ) ]);
 			}
 			printf("\n");
 		}
