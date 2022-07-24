@@ -1,5 +1,4 @@
 #include <list>
-#include <SDL2/SDL.h>
 #include <limits>
 #include <complex>
 #include <stdio.h>
@@ -9,7 +8,8 @@
 #define inf numeric_limits<double>::max()
 using namespace std;
 using cplx = complex<double>;
-#include "common/comm.h"
+#include "common/vec3.h"
+#include "common/dir3.h"
 #include "object/object.h"
 #include "object/camera.h"
 #include "object/light.h"
@@ -17,7 +17,7 @@ using cplx = complex<double>;
 #include "scene/scene.h"
 
 #define XRES 50
-#define YRES 34
+#define YRES 32
 
 class ball : public body{
 	public:

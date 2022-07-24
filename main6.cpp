@@ -16,7 +16,7 @@ using cplx = complex<double>;
 #include "object/body.h"
 #include "scene/scene.h"
 
-#define XRES 64
+#define XRES 72
 #define YRES 45
 
 class donut : public body{
@@ -42,7 +42,7 @@ class donut : public body{
 };
 
 char chars[] = {'$','@','B','&','%','W','#','k','d','q','m','O','0','L','l','i','/','\\','|','(',')','1','{','}','[',']','?','<','>',';',':','^','+','~','-','\'','`','.',' '};  // more detail less contrast
- 
+
 //char chars[] = {' ','.',':','-','=','+','*','#','%','@'}; // less detail more contrast
 
 int seg(unsigned int i){
@@ -51,7 +51,7 @@ int seg(unsigned int i){
 	const int q = len/breadth;
 	const int r = len%breadth;
 	int a = 0;
-	for(int j=0;j<=breadth;j++){
+	for(int j=0;j<breadth;j++){
 		if(j<r)
 			a+=q+1;
 		else
@@ -59,23 +59,22 @@ int seg(unsigned int i){
 		if(a>i)
 			return j;
 	}
-	return 0;
+	return breadth-1;
 }
 
 int main(int argc, char* argv[]){
-
-	camera cam(vec3<double>(-8, 0, 0), vec3<double>(0,0,0), 64.6, 1); 
+	camera cam(vec3<double>(-10, 0, 0), vec3<double>(0,0,0), 72.6, 1); 
 	scene sc(XRES,YRES,cam,vec3<double>(0.1,0.1,0.1));
 
-	donut* don = new donut(vec3<double>(0,0,0), vec3<double>(M_PI/2,0,0), 0.9,3,true,3.5,3.5,1.9);
-	donut* don2 = new donut(vec3<double>(0,0,0), vec3<double>(0,0,0), 0.7,1.3,true,1.5,1.5,0.8);
+	donut* don = new donut(vec3<double>(0,0,0), vec3<double>(1.1,0,0), 1.8,2.8,true,4.4,4.4,2.4);
 
 	sc.bodies.push_back(don);
-	sc.bodies.push_back(don2);
 
-	light* lt = new light(vec3<double>(-4,0,6), vec3<double>(1,1,1));
+	light* lt = new light(vec3<double>(-5,-3,4), vec3<double>(1,1,1));
+	light* lt2 = new light(vec3<double>(-7,3,2), vec3<double>(0.2,0.2,0.2));
 
 	sc.lights.push_back(lt);
+	sc.lights.push_back(lt2);
 
 	int pitch = XRES;
 	unsigned char* screen_buff = new unsigned char[XRES*YRES];
@@ -86,13 +85,14 @@ int main(int argc, char* argv[]){
 		sc.render( (void*) screen_buff,pitch, true);
 		for(int i=0;i<YRES;i++){
 			for(int j=0;j<XRES;j++){
-				printf("%c ",chars[ sizeof(chars) - 1 -seg( (unsigned int)screen_buff[i*XRES + j] + 2 ) ]);
+				printf("%c ",chars[ sizeof(chars)-1-seg( (unsigned int)screen_buff[i*XRES + j] ) ]);
+				//printf("%02d ",sizeof(chars)-seg( (unsigned int)screen_buff[i*XRES + j]));
+				//printf("%03d ",(unsigned int)screen_buff[i*XRES + j]);
 			}
 			printf("\n");
 		}
-		c -= 0.03;
-		don->change_angle(vec3<double>(M_PI/2,c,0));
-		don2->change_angle(vec3<double>(0,3*c,0));
+		c -= 0.05;
+		don->change_angle(vec3<double>(1.1,c,1.1*c));
 	}
 	return 0;
 }

@@ -4,7 +4,8 @@ using std::sin;
 using std::cos;
 using std::sqrt;
 
-#include "../common/comm.h"
+#include "../common/vec3.h"
+#include "../common/dir3.h"
 #include "../object/object.h"
 #include "camera.h"
 
