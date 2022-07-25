@@ -19,22 +19,35 @@ using cplx = complex<double>;
 #define XRES 72
 #define YRES 45
 
-class donut : public body{
+
+class ball : public body{
 	public:
-	double rr,RR;
-	donut(vec3<double> pos, vec3<double> angle, double sradius, double bradius,bool hitbox = false, double a = 0, double b = 0, double c =0) : body(pos, angle, 0, 4, hitbox,a,b,c){
-		rr = sradius;
-		RR = bradius;
+	double rad;
+	ball(vec3<double> pos, vec3<double> angle, double radius) : body(pos, angle, 0, 2){
+		this->rad = radius;
+	}
+	double intersect(vec3<double> o, dir3<double> d){ // override with solved equation to achieve higher speed
+		o = o-pos;
+		double aa = d*d;
+		double bb = o*d*2;
+		double cc = o*o - rad*rad;
+		double k = bb*bb - 4*aa*cc; 
+		if(k > 0){
+			double x1 = (sqrt(k) - bb)/(2*aa);
+			double x2 = -1*(sqrt(k) + bb)/(2*aa);
+			if(x2>0) return x2;
+			if(x1>0) return x1;
+		}
+		return inf;
+	}
+	dir3<double> get_normal(vec3<double> inter){
+		return dir3<double>(inter-pos);
 	}
 	vec3<double> diffuse_color(vec3<double> inter){
 		return vec3<double>(0.8,0.8,0.8);
 	}
 	cplx surf_func(vec3<cplx> r){
-		cplx x2 = r.x*r.x;
-		cplx y2 = r.y*r.y;
-		double R2 = RR*RR;
-		cplx t1 = (x2 + y2 + r.z*r.z + R2 - rr*rr);
-		return t1*t1 - 4*R2*(x2+y2);
+		return cplx(0,0);
 	}
 	vec3<double> shader(scene* sc, double dist, dir3<double> dir, int bounce){
 		return lambert_shader(sc,dist,dir);	
@@ -66,7 +79,7 @@ int main(int argc, char* argv[]){
 	camera cam(vec3<double>(-10, 0, 0), vec3<double>(0,0,0), 72.6, 1); 
 	scene sc(XRES,YRES,cam,vec3<double>(0.1,0.1,0.1));
 
-	donut* don = new donut(vec3<double>(0,0,0), vec3<double>(1.1,0,0), 1.8,2.8,true,4.4,4.4,2.4);
+	ball* don = new ball(vec3<double>(0,0,0), vec3<double>(1.1,0,0), 3);
 
 	sc.bodies.push_back(don);
 
@@ -79,20 +92,18 @@ int main(int argc, char* argv[]){
 	int pitch = XRES;
 	unsigned char* screen_buff = new unsigned char[XRES*YRES];
 	double c=0;
-	while(true){
+	//while(true){
 		clear();
 		cgoto(0,0);
 		sc.render( (void*) screen_buff,pitch, true);
 		for(int i=0;i<YRES;i++){
 			for(int j=0;j<XRES;j++){
 				printf("%c ",chars[ sizeof(chars)-1-seg( (unsigned int)screen_buff[i*XRES + j] ) ]);
-				//printf("%02d ",sizeof(chars)-seg( (unsigned int)screen_buff[i*XRES + j]));
-				//printf("%03d ",(unsigned int)screen_buff[i*XRES + j]);
 			}
 			printf("\n");
 		}
 		c -= 0.05;
 		don->change_angle(vec3<double>(1.1,c,1.1*c));
-	}
+	//}
 	return 0;
 }

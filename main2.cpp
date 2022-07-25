@@ -67,8 +67,8 @@ int main(int argc, char* argv[]){
 	camera cam(vec3<double>(-8, 0, 0), vec3<double>(0,0,0), 64.6, 1); 
 	scene sc(XRES,YRES,cam,vec3<double>(0.1,0.1,0.1));
 
-	donut* don = new donut(vec3<double>(0,0,0), vec3<double>(M_PI/2,0,0), 0.9,3,true,3.5,3.5,1.9);
-	donut* don2 = new donut(vec3<double>(0,0,0), vec3<double>(0,0,0), 0.7,1.3,true,1.5,1.5,0.8);
+	donut* don = new donut(vec3<double>(0,0,0), vec3<double>(M_PI/2,0,0), 0.9,3,true,3.7,3.7,2.0); // bigger
+	donut* don2 = new donut(vec3<double>(0,0,0), vec3<double>(0,0,0), 0.7,1.3,true,1.7,1.7,0.8); // smaller
 
 	sc.bodies.push_back(don);
 	sc.bodies.push_back(don2);
