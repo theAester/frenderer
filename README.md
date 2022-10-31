@@ -4,10 +4,19 @@ tiny little c++ renderer.
 if you can provide a collision function for it, frenderer can render it.
 
 # compiling
-see compile.sh to get the idea on how to compile.
+
+``` bash
+make [filename]
+```
+
+for example use
+``` bash
+make main2
+```
+to compile main.cpp to build/main2
 
 # Examples
-main.cpp : render to an actual image. The only example of this type. Uses SDL2 for 2d graphics. The rest of the examples render to terminal
+main.cpp : render to an actual image. The only example of this type. Uses SDL2 for 2d graphics. The rest of the examples render to terminal(add libSDL2 to linker)
 
 main2.cpp: reders two nested donuts spinning about the z and the y axis.
 
