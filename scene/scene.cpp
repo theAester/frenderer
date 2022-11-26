@@ -13,6 +13,10 @@ using cplx = complex<double>;
 #include "../object/light.h"
 #include "scene.h"
 
+#ifndef M_PI
+#define M_PI 3.14159265368979
+#endif
+
 scene::scene(int resolution_x, int resolution_y, camera cam, vec3<double> ambient){
 	resolution.x = resolution_x;
 	resolution.y = resolution_y;

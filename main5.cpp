@@ -16,6 +16,10 @@ using cplx = complex<double>;
 #include "object/body.h"
 #include "scene/scene.h"
 
+#ifndef M_PI
+#define M_PI 3.14159265358979
+#endif
+
 #define XRES 50
 #define YRES 32
 
