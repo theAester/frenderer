@@ -3,6 +3,8 @@ tiny little c++ renderer.
 
 if you can provide a collision function for it, frenderer can render it.
 
+<b> The GPU version is finally here. check out [frenderer-cuda](https://github.com/theAester/frenderer-cuda.git) </b>
+
 # compiling
 
 ``` bash
@@ -107,5 +109,5 @@ since numeric calculations can be time consuming two actions are possible:
 # Notes:
 Code reviews and critisism is appreciated. You can email through hiradcode@yahoo.com
 
-The current release relies on cpu and main memory to do all the calculations and hence is a little slow. A greate TODO is to leave some of the calculations 
-to the GPU which would be a huge speed up.
+~The current release relies on cpu and main memory to do all the calculations and hence is a little slow. A greate TODO is to leave some of the calculations 
+to the GPU which would be a huge speed up.~ DONE! check out [frenderer-cuda](https://github.com/theAester/frenderer-cuda.git).
